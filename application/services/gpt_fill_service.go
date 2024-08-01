@@ -1,8 +1,10 @@
 package services
 
 import (
+	"fmt"
 	"project/application/core/entities"
 	"project/application/core/ports"
+	"project/pkg"
 	"strconv"
 )
 
@@ -17,7 +19,22 @@ func NewGPTFillService(userRepo ports.UserRepository, challengeRepo ports.Challe
 }
 
 func (s *GPTFillService) FillTables() error {
-	// Llenar tabla de usuarios
+	if err := s.fillUserTable(); err != nil {
+		return err
+	}
+
+	if err := s.fillChallengeTable(); err != nil {
+		return err
+	}
+
+	if err := s.fillVideoTable(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Llenar tabla de usuarios
+func (s *GPTFillService) fillUserTable() error {
 	for i := 0; i < 30; i++ {
 		user := &entities.User{
 			Name:  "User " + strconv.Itoa(i),
@@ -27,18 +44,24 @@ func (s *GPTFillService) FillTables() error {
 			return err
 		}
 	}
+	return nil
+}
 
-	// Llenar tabla de desafíos
+// Llenar tabla de desafíos
+func (s *GPTFillService) fillChallengeTable() error {
 	for i := 0; i < 30; i++ {
-		// prompt := "Generate a detailed description for a challenge titled 'Challenge " + strconv.Itoa(i) + "' with difficulty level " + strconv.Itoa(i%5+1)
-		//description, err := pkg.GenerateDescription(prompt)
-		//if err != nil {
-		//	fmt.Printf(err.Error())
-		//}
+		title, err := pkg.GenerateDescription("Generate a short title regarding this topic: art challenges to discover talents. This title will fill the 'Title' column in a Challenge table")
+		if err != nil {
+			fmt.Printf(err.Error())
+			title = "Random title"
+		}
+		description, err := pkg.GenerateDescription("Generate a description based on this challenge title '" + title + "'")
+		if err != nil {
+			fmt.Printf(err.Error())
+		}
 		challenge := &entities.Challenge{
-			Title: "Challenge " + strconv.Itoa(i),
-			//Description: description,
-			Description: "Description " + strconv.Itoa(i),
+			Title:       title,
+			Description: description,
 			Difficulty:  i%5 + 1,
 			UserID:      i%10 + 1,
 		}
@@ -46,18 +69,24 @@ func (s *GPTFillService) FillTables() error {
 			return err
 		}
 	}
+	return nil
+}
 
-	// Llenar tabla de videos
+// Llenar tabla de videos
+func (s *GPTFillService) fillVideoTable() error {
 	for i := 0; i < 30; i++ {
-		//prompt := "Generate a detailed description for a video titled 'Video " + strconv.Itoa(i) + "'"
-		//description, err := pkg.GenerateDescription(prompt)
-		//if err != nil {
-		//	return err
-		//}
+		title, err := pkg.GenerateDescription("Generate a random short title regarding this topic: naming a video to demo a talent. This title will fill the 'Title' column in a Video table")
+		if err != nil {
+			fmt.Printf(err.Error())
+			title = "Random title"
+		}
+		description, err := pkg.GenerateDescription("Generate a description based on this video title '" + title + "'")
+		if err != nil {
+			fmt.Printf(err.Error())
+		}
 		video := &entities.Video{
-			Title: "Video " + strconv.Itoa(i),
-			// Description: description,
-			Description: "Description " + strconv.Itoa(i),
+			Title:       title,
+			Description: description,
 			URL:         "http://example.com/video" + strconv.Itoa(i),
 			UserID:      i%10 + 1,
 		}

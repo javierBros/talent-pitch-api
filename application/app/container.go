@@ -30,11 +30,17 @@ func Start() {
 	videoService := services.NewVideoService(videoRepo, userRepo)
 	gptFillService := services.NewGPTFillService(userRepo, challengeRepo, videoRepo)
 
+	// Iniciar una go rutina para llenar las tablas
+	go func() {
+		if err := gptFillService.FillTables(); err != nil {
+			log.Fatalf("failed to fill tables: %v", err)
+		}
+	}()
+
 	e := echo.New()
 	controller.RegisterUserRoutes(e, userService)
 	controller.RegisterChallengeRoutes(e, challengeService)
 	controller.RegisterVideoRoutes(e, videoService)
-	controller.RegisterGPTFillRoutes(e, gptFillService)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
