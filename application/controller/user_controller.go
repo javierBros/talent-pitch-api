@@ -3,10 +3,10 @@ package controller
 import (
 	"github.com/asaskevich/govalidator"
 	"github.com/labstack/echo/v4"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/ports"
+	"github.com/talent-pitch-api/application/mappers"
 	"net/http"
-	"project/application/core/domain"
-	"project/application/core/ports"
-	"project/application/mappers"
 	"strconv"
 )
 
@@ -17,10 +17,10 @@ type UserController struct {
 // RegisterUserRoutes registra las rutas para los endpoints de usuario.
 func RegisterUserRoutes(e *echo.Echo, service ports.IUserService) {
 	handler := &UserController{service}
-	e.POST("/users", handler.CreateUser)
-	e.GET("/users/:id", handler.GetUser)
-	e.GET("/users", handler.ListUsers)
-	e.DELETE("/users/:id", handler.DeleteUser) // Endpoint DELETE
+	e.POST("/v1/users", handler.CreateUser)
+	e.GET("/v1/users/:id", handler.GetUser)
+	e.GET("/v1/users", handler.ListUsers)
+	e.DELETE("/v1/users/:id", handler.DeleteUser) // Endpoint DELETE
 }
 
 // CreateUser crea un nuevo usuario.

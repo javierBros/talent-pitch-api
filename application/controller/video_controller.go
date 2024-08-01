@@ -3,10 +3,10 @@ package controller
 import (
 	"github.com/asaskevich/govalidator"
 	"github.com/labstack/echo/v4"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/ports"
+	"github.com/talent-pitch-api/application/mappers"
 	"net/http"
-	"project/application/core/domain"
-	"project/application/core/ports"
-	"project/application/mappers"
 	"strconv"
 )
 
@@ -17,10 +17,10 @@ type VideoController struct {
 // RegisterVideoRoutes registra las rutas para los endpoints de video.
 func RegisterVideoRoutes(e *echo.Echo, service ports.IVideoService) {
 	handler := &VideoController{service}
-	e.POST("/videos", handler.CreateVideo)
-	e.GET("/videos/:id", handler.GetVideo)
-	e.GET("/videos", handler.ListVideos)
-	e.DELETE("/videos/:id", handler.DeleteVideo) // Endpoint DELETE
+	e.POST("/v1/videos", handler.CreateVideo)
+	e.GET("/v1/videos/:id", handler.GetVideo)
+	e.GET("/v1/videos", handler.ListVideos)
+	e.DELETE("/v1/videos/:id", handler.DeleteVideo) // Endpoint DELETE
 }
 
 // CreateVideo crea un nuevo video.

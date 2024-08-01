@@ -5,11 +5,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/talent-pitch-api/application/controller"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/entities"
 	"net/http"
 	"net/http/httptest"
-	"project/application/controller"
-	"project/application/core/domain"
-	"project/application/core/entities"
 	"strings"
 	"testing"
 )
@@ -40,7 +40,7 @@ func (m *MockUserService) DeleteUser(id int) error {
 
 func TestCreateUser(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/users", strings.NewReader(`{"name":"John Doe","email":"john.doe@example.com","image_path":"http://example.com/image.jpg"}`))
+	req := httptest.NewRequest(http.MethodPost, "/v1/users", strings.NewReader(`{"name":"John Doe","email":"john.doe@example.com","image_path":"http://example.com/image.jpg"}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -61,7 +61,7 @@ func TestCreateUser(t *testing.T) {
 
 func TestCreateUser_InvalidData(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/users", strings.NewReader(`{"name":"","email":"invalid_email","image_path":"invalid_url"}`))
+	req := httptest.NewRequest(http.MethodPost, "/v1/users", strings.NewReader(`{"name":"","email":"invalid_email","image_path":"invalid_url"}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -78,7 +78,7 @@ func TestCreateUser_InvalidData(t *testing.T) {
 
 func TestGetUser(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/users/1", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/users/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -100,7 +100,7 @@ func TestGetUser(t *testing.T) {
 
 func TestGetUser_InvalidID(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/users/invalid", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/users/invalid", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -119,7 +119,7 @@ func TestGetUser_InvalidID(t *testing.T) {
 
 func TestGetUser_NotFound(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/users/1", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/users/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -139,7 +139,7 @@ func TestGetUser_NotFound(t *testing.T) {
 
 func TestListUsers(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/users?limit=10&offset=0", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/users?limit=10&offset=0", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
@@ -162,7 +162,7 @@ func TestListUsers(t *testing.T) {
 
 func TestListUsers_Error(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/users?limit=10&offset=0", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/users?limit=10&offset=0", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
@@ -182,7 +182,7 @@ func TestListUsers_Error(t *testing.T) {
 
 func TestDeleteUser(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodDelete, "/users/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/v1/users/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -200,7 +200,7 @@ func TestDeleteUser(t *testing.T) {
 
 func TestDeleteUser_NotFound(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodDelete, "/users/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/v1/users/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")

@@ -1,4 +1,4 @@
-module project
+module github.com/talent-pitch-api
 
 go 1.16
 

@@ -3,10 +3,10 @@ package controller
 import (
 	"github.com/asaskevich/govalidator"
 	"github.com/labstack/echo/v4"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/ports"
+	"github.com/talent-pitch-api/application/mappers"
 	"net/http"
-	"project/application/core/domain"
-	"project/application/core/ports"
-	"project/application/mappers"
 	"strconv"
 )
 
@@ -17,10 +17,10 @@ type ChallengeController struct {
 // RegisterChallengeRoutes registra las rutas para los endpoints de desafío.
 func RegisterChallengeRoutes(e *echo.Echo, service ports.IChallengeService) {
 	handler := &ChallengeController{service}
-	e.POST("/challenges", handler.CreateChallenge)
-	e.GET("/challenges/:id", handler.GetChallenge)
-	e.GET("/challenges", handler.ListChallenges)
-	e.DELETE("/challenges/:id", handler.DeleteChallenge)
+	e.POST("/v1/challenges", handler.CreateChallenge)
+	e.GET("/v1/challenges/:id", handler.GetChallenge)
+	e.GET("/v1/challenges", handler.ListChallenges)
+	e.DELETE("/v1/challenges/:id", handler.DeleteChallenge)
 }
 
 // CreateChallenge crea un nuevo desafío.

@@ -1,8 +1,8 @@
 package mappers
 
 import (
-	"project/application/core/domain"
-	"project/application/core/entities"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/entities"
 )
 
 func ToUserResponse(user *entities.User) domain.UserResponse {

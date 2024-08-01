@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/talent-pitch-api/config"
 	"net/http"
-	"project/config"
 )
 
 type GPTMessage struct {

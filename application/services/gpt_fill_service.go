@@ -2,9 +2,10 @@ package services
 
 import (
 	"fmt"
-	"project/application/core/entities"
-	"project/application/core/ports"
-	"project/pkg"
+	"github.com/talent-pitch-api/application/core/entities"
+	"github.com/talent-pitch-api/application/core/ports"
+	"github.com/talent-pitch-api/pkg"
+	"log"
 	"strconv"
 )
 
@@ -19,6 +20,8 @@ func NewGPTFillService(userRepo ports.UserRepository, challengeRepo ports.Challe
 }
 
 func (s *GPTFillService) FillTables() error {
+	log.Println("Starting to fill tables")
+
 	if err := s.fillUserTable(); err != nil {
 		return err
 	}
@@ -30,11 +33,14 @@ func (s *GPTFillService) FillTables() error {
 	if err := s.fillVideoTable(); err != nil {
 		return err
 	}
+
+	log.Println("Finished filling tables")
 	return nil
 }
 
 // Llenar tabla de usuarios
 func (s *GPTFillService) fillUserTable() error {
+	log.Println("Filling user table")
 	for i := 0; i < 30; i++ {
 		user := &entities.User{
 			Name:  "User " + strconv.Itoa(i),
@@ -44,11 +50,13 @@ func (s *GPTFillService) fillUserTable() error {
 			return err
 		}
 	}
+	log.Println("Finished filling user table")
 	return nil
 }
 
 // Llenar tabla de desafíos
 func (s *GPTFillService) fillChallengeTable() error {
+	log.Println("Filling challenge table")
 	for i := 0; i < 30; i++ {
 		title, err := pkg.GenerateDescription("Generate a short title regarding this topic: art challenges to discover talents. This title will fill the 'Title' column in a Challenge table")
 		if err != nil {
@@ -69,11 +77,13 @@ func (s *GPTFillService) fillChallengeTable() error {
 			return err
 		}
 	}
+	log.Println("Finished filling challenge table")
 	return nil
 }
 
 // Llenar tabla de videos
 func (s *GPTFillService) fillVideoTable() error {
+	log.Println("Filling video table")
 	for i := 0; i < 30; i++ {
 		title, err := pkg.GenerateDescription("Generate a random short title regarding this topic: naming a video to demo a talent. This title will fill the 'Title' column in a Video table")
 		if err != nil {
@@ -94,6 +104,6 @@ func (s *GPTFillService) fillVideoTable() error {
 			return err
 		}
 	}
-
+	log.Println("Finished filling video table")
 	return nil
 }

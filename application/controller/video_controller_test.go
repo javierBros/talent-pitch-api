@@ -5,11 +5,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/talent-pitch-api/application/controller"
+	"github.com/talent-pitch-api/application/core/domain"
+	"github.com/talent-pitch-api/application/core/entities"
 	"net/http"
 	"net/http/httptest"
-	"project/application/controller"
-	"project/application/core/domain"
-	"project/application/core/entities"
 	"strings"
 	"testing"
 )
@@ -40,7 +40,7 @@ func (m *MockVideoService) DeleteVideo(id int) error {
 
 func TestCreateVideo(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/videos", strings.NewReader(`{"title":"Video 1","description":"Description 1","url":"http://example.com/video1","userId":1}`))
+	req := httptest.NewRequest(http.MethodPost, "/v1/videos", strings.NewReader(`{"title":"Video 1","description":"Description 1","url":"http://example.com/video1","userId":1}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -61,7 +61,7 @@ func TestCreateVideo(t *testing.T) {
 
 func TestCreateVideo_InvalidData(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/videos", strings.NewReader(`{"title":"","description":"","url":"","user_id":0}`))
+	req := httptest.NewRequest(http.MethodPost, "/v1/videos", strings.NewReader(`{"title":"","description":"","url":"","user_id":0}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -78,7 +78,7 @@ func TestCreateVideo_InvalidData(t *testing.T) {
 
 func TestGetVideo(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/videos/1", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/videos/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -100,7 +100,7 @@ func TestGetVideo(t *testing.T) {
 
 func TestGetVideo_InvalidID(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/videos/invalid", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/videos/invalid", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -119,7 +119,7 @@ func TestGetVideo_InvalidID(t *testing.T) {
 
 func TestGetVideo_NotFound(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/videos/1", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/videos/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -139,7 +139,7 @@ func TestGetVideo_NotFound(t *testing.T) {
 
 func TestListVideos(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/videos?limit=10&offset=0", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/videos?limit=10&offset=0", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
@@ -162,7 +162,7 @@ func TestListVideos(t *testing.T) {
 
 func TestListVideos_Error(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodGet, "/videos?limit=10&offset=0", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/videos?limit=10&offset=0", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
@@ -182,7 +182,7 @@ func TestListVideos_Error(t *testing.T) {
 
 func TestDeleteVideo(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodDelete, "/videos/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/v1/videos/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")
@@ -200,7 +200,7 @@ func TestDeleteVideo(t *testing.T) {
 
 func TestDeleteVideo_NotFound(t *testing.T) {
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodDelete, "/videos/1", nil)
+	req := httptest.NewRequest(http.MethodDelete, "/v1/videos/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetParamNames("id")

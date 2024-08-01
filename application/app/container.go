@@ -2,11 +2,11 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/talent-pitch-api/application/controller"
+	"github.com/talent-pitch-api/application/core/entities"
+	"github.com/talent-pitch-api/application/repositories"
+	"github.com/talent-pitch-api/application/services"
 	"log"
-	"project/application/controller"
-	"project/application/core/entities"
-	"project/application/repositories"
-	"project/application/services"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

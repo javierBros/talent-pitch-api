@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"project/application/app"
-	"project/config"
+	"github.com/talent-pitch-api/application/app"
+	"github.com/talent-pitch-api/config"
 )
 
 func Execute() {

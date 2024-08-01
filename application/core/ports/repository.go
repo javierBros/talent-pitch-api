@@ -1,7 +1,7 @@
 package ports
 
 import (
-	"project/application/core/entities"
+	"github.com/talent-pitch-api/application/core/entities"
 )
 
 type UserRepository interface {

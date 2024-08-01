@@ -1,7 +1,7 @@
 package main
 
 import (
-	"project/cmd"
+	"github.com/talent-pitch-api/cmd"
 )
 
 func main() {

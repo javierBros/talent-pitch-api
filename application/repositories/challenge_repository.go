@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"project/application/core/entities"
-	"project/application/core/ports"
+	"github.com/talent-pitch-api/application/core/entities"
+	"github.com/talent-pitch-api/application/core/ports"
 
 	"gorm.io/gorm"
 )
